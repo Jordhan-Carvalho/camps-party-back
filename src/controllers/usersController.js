@@ -1,4 +1,4 @@
-import express from "express";
+const express = require("express");
 
 const router = express.Router();
 
@@ -10,4 +10,4 @@ router.post("/sign-in", async (req, res) => {
   res.send("Rota do api/user/sign-in");
 });
 
-export default router;
+module.exports = router;
