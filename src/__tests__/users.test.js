@@ -1,7 +1,7 @@
 const supertest = require("supertest");
 
-const db = require("../database/index");
 const app = require("../app");
+const db = require("../database/index");
 
 let userId;
 
