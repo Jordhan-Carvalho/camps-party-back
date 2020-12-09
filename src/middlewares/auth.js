@@ -1,20 +1,21 @@
-// const sessionsRepository = require("../repositories/sessionsRepository");
+const jwt = require("jsonwebtoken");
+const usersRepository = require("../repositories/usersRepository");
 
-// async function authMiddleware(req, res, next) {
-//   const authHeader = req.header("Authorization");
-//   if (!authHeader)
-//     return res.status(401).send({ error: "Auth header not found" });
+async function authMiddleware(req, res, next) {
+  const token = req.header("x-access-token");
+  if (!token) return res.status(401).send({ error: "Auth header not found" });
 
-//   const token = authHeader.replace("Bearer ", "");
+  try {
+    const { id } = jwt.verify(token, process.env.SECRET);
+    const user = await usersRepository.findById(id);
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.locals.user = { id: user.id, email: user.email, cpf: user.cpf };
 
-//   const session = await sessionsService.findByToken(token);
-//   if (!session) return res.status(401).send({ error: "Invalid token" });
-//   const user = await usersService.findById(session.userId);
-//   if (!user) return res.status(401).json({ error: "Invalid token" });
-//   res.locals.user = user;
-//   res.locals.session = session;
+    next();
+  } catch (e) {
+    console.log(e);
+    res.status(401).send({ error: "Invalid token" });
+  }
+}
 
-//   next();
-// }
-
-// module.exports = authMiddleware;
+module.exports = authMiddleware;
