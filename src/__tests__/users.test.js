@@ -64,3 +64,6 @@ describe("POST /sign-up", () => {
     expect(res.status).toBe(409);
   });
 });
+
+console.log(test);
+// testing asd
