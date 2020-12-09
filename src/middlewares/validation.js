@@ -15,7 +15,10 @@ const userSignUpSchema = Joi.object({
 
 const userSignInSchema = Joi.object({
   email: Joi.string().email().lowercase().required(),
-  password: Joi.string().min(2).max(30).required(),
+  password: Joi.string().min(2).max(30).required().messages({
+    "string.base": `Tem que ser texto`,
+    "string.min": "Senha tem que ser maior que 2 carc",
+  }),
 });
 
 const validateSignup = (req, res, next) => {
