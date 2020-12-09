@@ -13,4 +13,6 @@ app.use("/api/users", usersController);
 
 const port = process.env.PORT;
 
-app.listen(port, () => console.log(`Servidor on no port ${port}`));
+app.listen(port, () => console.log(`Server is running on port ${port}`));
+
+module.exports = app;

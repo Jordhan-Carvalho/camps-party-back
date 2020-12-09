@@ -8,7 +8,9 @@ const userSignUpSchema = Joi.object({
     "string.pattern.base": "formato de CPF invalido",
   }),
   password: Joi.string().min(2).max(30).required(),
-  confirmPassword: Joi.ref("password"),
+  confirmPassword: Joi.any().valid(Joi.ref("password")).required().messages({
+    "any.only": "Confirmacao de senha diferente",
+  }),
 });
 
 const userSignInSchema = Joi.object({
@@ -28,7 +30,7 @@ const validateSignup = (req, res, next) => {
 const validateSignin = (req, res, next) => {
   if (userSignInSchema.validate(req.body).error)
     return res
-      .status(400)
+      .status(422)
       .send(userSignInSchema.validate(req.body).error.message);
 
   next();
