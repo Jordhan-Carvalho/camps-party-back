@@ -13,6 +13,7 @@ async function create(userId, trails) {
     );
 
     createdTrails = result.rows;
+
     trailsFinal = JSON.parse(createdTrails);
   } catch (error) {
     console.log(error);
@@ -21,6 +22,14 @@ async function create(userId, trails) {
   return trailsFinal;
 }
 
+async function getUserTrails(userId) {
+  const resp = await db.query(`SELECT * FROM trails WHERE "userId" = $1`, [
+    userId,
+  ]);
+  return resp.rows[0];
+}
+
 module.exports = {
   create,
+  getUserTrails,
 };
