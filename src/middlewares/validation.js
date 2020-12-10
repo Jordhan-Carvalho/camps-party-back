@@ -11,7 +11,7 @@ const userSignUpSchema = Joi.object({
   confirmPassword: Joi.any().valid(Joi.ref("password")).required().messages({
     "any.only": "Confirmacao de senha diferente",
   }),
-  type: Joi.string().required(),
+  ticket: Joi.string().required()
 });
 
 const userSignInSchema = Joi.object({

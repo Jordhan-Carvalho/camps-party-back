@@ -2,14 +2,15 @@ const db = require("../database/index");
 const bcrypt = require("bcrypt");
 
 async function create(userParams) {
-  const { cpf, email, password, type } = userParams;
+  let { cpf, email, password, ticket } = userParams;
   let userId;
 
   const hashedPass = bcrypt.hashSync(password, 10);
+  cpf = cpf.toString();
 
   const result = await db.query(
-    "INSERT INTO users (email, cpf, password, type) VALUES ($1, $2, $3, $4) RETURNING *",
-    [email, cpf, hashedPass, type]
+    "INSERT INTO users (email, cpf, password, ticket) VALUES ($1, $2, $3, $4) RETURNING *",
+    [email, cpf, hashedPass, ticket]
   );
   userId = result.rows[0].id;
 
@@ -17,7 +18,8 @@ async function create(userParams) {
     id: userId,
     cpf,
     email,
-    type,
+    ticket
+
   };
 
   return newUser;
