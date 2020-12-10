@@ -22,8 +22,9 @@ afterAll(async () => {
 describe("POST /sign-up", () => {
   it("should respond with status 422 when body password different from passwordConfirmation ", async () => {
     const body = {
-      email: "test@test.com",
+      email: "test2@test.com",
       cpf: "01256358625",
+      ticket: "teste",
       password: "test123",
       confirmPassword: "test1233",
     };
@@ -37,6 +38,7 @@ describe("POST /sign-up", () => {
     const body = {
       email: "test@test.com",
       cpf: "01256358625",
+      ticket: "teste",
       password: "test123",
       confirmPassword: "test123",
     };
@@ -55,6 +57,7 @@ describe("POST /sign-up", () => {
     const body = {
       email: "test@test.com",
       cpf: "01256358625",
+      ticket: "teste",
       password: "test123",
       confirmPassword: "test123",
     };
