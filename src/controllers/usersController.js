@@ -34,4 +34,9 @@ router.post("/sign-in", validateSignin, async (req, res) => {
   }
 });
 
+router.get("/countdown", (req,res) => {
+  const event = new Date('December 11, 2020 18:00:00');
+  res.status(200).send({event})
+});
+
 module.exports = router;
