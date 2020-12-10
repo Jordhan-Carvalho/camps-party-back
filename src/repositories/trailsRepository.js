@@ -1,31 +1,26 @@
 const db = require("../database");
 
 async function create(userId, trails) {
+  const stringTrails = JSON.stringify(trails);
 
- const stringTrails = JSON.stringify(trails);
-
- let createdTrails;
- let trails; 
+  let createdTrails;
+  let trailsFinal;
 
   try {
     const result = await db.query(
       `INSERT INTO trails ("userId", trails) VALUES ($1, $2) RETURNING *`,
-      [userId, stringTrails ]);
+      [userId, stringTrails]
+    );
 
     createdTrails = result.rows;
-    trails = JSON.parse(createdTrails);
-
-  } catch(error) {
-      console.log(error)
+    trailsFinal = JSON.parse(createdTrails);
+  } catch (error) {
+    console.log(error);
   }
 
-  console.log(trails);
-  return trails;
-  
+  return trailsFinal;
 }
 
 module.exports = {
-    create
-  
-  };
-  
+  create,
+};
