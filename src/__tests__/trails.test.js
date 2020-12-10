@@ -26,31 +26,13 @@ describe("POST on the trail route", () => {
       { dayThree: { morning: "Gaming", afternoon: "Gaming", night: "Gaming" } },
     ];
 
-    // [
-    //        {
-    //            "dayOne": {
-    //                "morning": "Gaming",
-    //                "afternoon": "Gaming",
-    //                "night": "Gaming"
-    //            }
-    //        },
-    //        {
-    //            "dayTwo": {
-    //                "morning": "Gaming",
-    //                "afternoon": "Gaming",
-    //                "night": "Gaming"
-    //            }
-    //        },
-    //        {
-    //            "dayThree": {
-    //                "morning": "Gaming",
-    //                "afternoon": "Gaming",
-    //                "night": "Gaming"
-    //            }
-    //        }
-    //    ];
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjA3NjIzOTQ2LCJleHAiOjE2MDc3OTY3NDZ9.neMh-a2sGK1XuefTEPiSI_LJKNABaKtvA8TmbYMNLew";
 
-    const res = await supertest(app).post("/api/trails/post-trails").send(body);
+    const res = await supertest(app)
+    .post("/api/trails/post-trails")
+    .set({ "x-access-token": token })
+    .send(body);
+    
 
     expect(res.status).toBe(201);
   });
