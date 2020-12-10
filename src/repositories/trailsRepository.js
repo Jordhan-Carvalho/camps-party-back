@@ -4,6 +4,7 @@ async function create(userId, trails) {
   const stringTrails = JSON.stringify(trails);
 
   let createdTrails;
+  let trailsFinal;
 
   try {
     const result = await db.query(
@@ -12,12 +13,13 @@ async function create(userId, trails) {
     );
 
     createdTrails = result.rows;
+
+    trailsFinal = JSON.parse(createdTrails);
   } catch (error) {
     console.log(error);
   }
 
-  console.log(createdTrails);
-  return createdTrails;
+  return trailsFinal;
 }
 
 async function getUserTrails(userId) {
