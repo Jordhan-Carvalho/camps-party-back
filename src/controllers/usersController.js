@@ -16,6 +16,7 @@ router.post("/sign-up", validateSignup, async (req, res) => {
     const createdUser = await usersRepository.create(userParams);
     res.status(201).send(createdUser);
   } catch (e) {
+    console.log(e);
     res.status(409).send(e.message);
   }
 });
@@ -45,25 +46,20 @@ router.get("/countdown", (req, res) => {
 router.get("/:id/complete-reg", authMiddleware, async (req, res) => {
   const { id } = req.params;
   const user = res.locals.user;
+  let hotel;
   try {
-    // if (user.ticket === "hotel") await
+    if (user.ticket === "hotel") {
+      const resp = await registrationsRepository.getHotel(id);
+      hotel = resp.hotel;
+    }
     const registration = await registrationsRepository.getUserRegistration(id);
     const trails = await trailsRepository.getUserTrails(id);
-    const completeReg = { ...registration, ...trails };
+    const completeReg = { ...registration, ...trails, hotel };
+
     res.status(200).send(completeReg);
-  } catch (error) {
-    res.sendStatus(500);
-  }
-});
-
-router.get("/:id/trails", authMiddleware, async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const user = await trailsRepository.getUserTrails(id);
-    res.status(200).send(user);
-  } catch (error) {
-    res.sendStatus(500);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send(e.message);
   }
 });
 

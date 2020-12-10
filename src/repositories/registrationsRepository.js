@@ -26,7 +26,12 @@ async function setHotel(userId, hotel) {
   ]);
 }
 
-// async function findHotelByUser
+async function getHotel(userId) {
+  const resp = await db.query(`SELECT * FROM hotels WHERE "userId" = $1`, [
+    userId,
+  ]);
+  return resp.rows[0];
+}
 
 async function getUserRegistration(userId) {
   const resp = await db.query(
@@ -36,4 +41,4 @@ async function getUserRegistration(userId) {
   return resp.rows[0];
 }
 
-module.exports = { create, setHotel, getUserRegistration };
+module.exports = { create, setHotel, getUserRegistration, getHotel };
