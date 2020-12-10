@@ -44,8 +44,9 @@ router.get("/countdown", (req, res) => {
 
 router.get("/:id/complete-reg", authMiddleware, async (req, res) => {
   const { id } = req.params;
-
+  const user = res.locals.user;
   try {
+    // if (user.ticket === "hotel") await
     const registration = await registrationsRepository.getUserRegistration(id);
     const trails = await trailsRepository.getUserTrails(id);
     const completeReg = { ...registration, ...trails };

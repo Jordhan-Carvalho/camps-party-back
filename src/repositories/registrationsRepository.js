@@ -26,6 +26,8 @@ async function setHotel(userId, hotel) {
   ]);
 }
 
+// async function findHotelByUser
+
 async function getUserRegistration(userId) {
   const resp = await db.query(
     `SELECT * FROM registrations WHERE "userId" = $1`,
