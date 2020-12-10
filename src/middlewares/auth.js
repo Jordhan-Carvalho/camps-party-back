@@ -9,8 +9,7 @@ async function authMiddleware(req, res, next) {
     const { id } = jwt.verify(token, process.env.SECRET);
     const user = await usersRepository.findById(id);
     if (!user) return res.status(404).json({ error: "User not found" });
-    res.locals.user = { id: user.id, email: user.email, cpf: user.cpf, type: user.type };
-
+    res.locals.user = { id: user.id, email: user.email, cpf: user.cpf, ticket: user.ticket };
     next();
   } catch (e) {
     console.log(e);

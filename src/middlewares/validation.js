@@ -27,7 +27,7 @@ const registrationSchema = Joi.object({
   address: Joi.string().min(3).required(),
   phone: Joi.string().min(8).required(),
   gender: Joi.string().required(),
-  hotel: Joi.string()
+  hotel: Joi.string().optional(),
 })
 
 const validateSignup = (req, res, next) => {
