@@ -19,6 +19,7 @@ async function create(userParams) {
     cpf,
     email,
     ticket
+
   };
 
   return newUser;

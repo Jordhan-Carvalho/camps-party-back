@@ -22,6 +22,14 @@ const userSignInSchema = Joi.object({
   }),
 });
 
+const registrationSchema = Joi.object({
+  name: Joi.string().min(3).required(),
+  address: Joi.string().min(3).required(),
+  phone: Joi.string().min(8).required(),
+  gender: Joi.string().required(),
+  hotel: Joi.string()
+})
+
 const validateSignup = (req, res, next) => {
   if (userSignUpSchema.validate(req.body).error)
     return res
@@ -40,4 +48,13 @@ const validateSignin = (req, res, next) => {
   next();
 };
 
-module.exports = { validateSignup, validateSignin };
+const validateRegistration = (req, res, next) => {
+  if (registrationSchema.validate(req.body).error)
+    return res
+      .status(422)
+      .send(registrationSchema.validate(req.body).error.message);
+
+  next();
+};
+
+module.exports = { validateSignup, validateSignin, validateRegistration };
