@@ -28,7 +28,7 @@ router.post("/sign-in", validateSignin, async (req, res) => {
 
     if (!user) return res.sendStatus(401);
     const token = jwt.sign({ id: user.id }, process.env.SECRET, {
-      expiresIn: "2 days",
+      expiresIn: "5 days",
     });
 
     res.status(200).send({ ...user, token });
