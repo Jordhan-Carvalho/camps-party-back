@@ -25,7 +25,7 @@ const userSignInSchema = Joi.object({
 const registrationSchema = Joi.object({
   name: Joi.string().min(3).required(),
   address: Joi.string().min(3).required(),
-  phone: Joi.string().min(8).required(),
+  phone: Joi.string().min(9).required(),
   gender: Joi.string().required(),
   hotel: Joi.string().optional(),
 })
