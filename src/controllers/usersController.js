@@ -25,7 +25,7 @@ router.post("/sign-in", validateSignin, async (req, res) => {
 
     if (!user) return res.sendStatus(401);
     const token = jwt.sign({ id: user.id }, process.env.SECRET, {
-      expiresIn: "5 days",
+      expiresIn: "2 days",
     });
 
     res.status(200).send({ ...user, token });
@@ -34,9 +34,9 @@ router.post("/sign-in", validateSignin, async (req, res) => {
   }
 });
 
-router.get("/countdown", (req, res) => {
-  const event = new Date("December 11, 2020 18:00:00");
-  res.status(200).send({ event });
+router.get("/countdown", (req,res) => {
+  const event = new Date('December 11, 2020 18:00:00');
+  res.status(200).send({event})
 });
 
 module.exports = router;
