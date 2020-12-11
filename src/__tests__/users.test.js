@@ -3,6 +3,8 @@ const supertest = require("supertest");
 const app = require("../app");
 const db = require("../database/index");
 
+let user;
+
 async function cleanDB() {
   try {
     await db.query("DELETE FROM users");
@@ -73,6 +75,8 @@ describe("POST /sign-in", () => {
 
     const res = await supertest(app).post("/api/users/sign-in").send(body);
 
+    user = res.body;
+
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("id");
     expect(res.body).toHaveProperty("email");
@@ -90,5 +94,16 @@ describe("POST /sign-in", () => {
     const res = await supertest(app).post("/api/users/sign-in").send(body);
 
     expect(res.status).toBe(401);
+  });
+});
+
+describe("GET /:id/complete-reg", () => {
+  it("should respond with status 200 when authenticated user has no registration", async () => {
+    const res = await supertest(app)
+      .get(`/api/users/${user.id}/complete-reg`)
+      .set({ "x-access-token": user.token });
+
+    expect(res.status).toBe(200);
+    expect(res.body).toMatchObject({});
   });
 });
