@@ -3,8 +3,6 @@ const supertest = require("supertest");
 const app = require("../app");
 const db = require("../database/index");
 
-let userId, token;
-
 async function cleanDB() {
   try {
     await db.query("DELETE FROM users");
@@ -45,8 +43,6 @@ describe("POST /sign-up", () => {
 
     const res = await supertest(app).post("/api/users/sign-up").send(body);
 
-    userId = res.body.id;
-
     expect(res.status).toBe(201);
     expect(res.body).toHaveProperty("email");
     expect(res.body).toHaveProperty("cpf");
@@ -77,13 +73,22 @@ describe("POST /sign-in", () => {
 
     const res = await supertest(app).post("/api/users/sign-in").send(body);
 
-    token = res.body.token;
-
     expect(res.status).toBe(200);
     expect(res.body).toHaveProperty("id");
     expect(res.body).toHaveProperty("email");
     expect(res.body).toHaveProperty("cpf");
     expect(res.body).toHaveProperty("ticket");
     expect(res.body).toHaveProperty("token");
+  });
+
+  it("should respond with status 401 when password is incorrect", async () => {
+    const body = {
+      email: "test@test.com",
+      password: "wrongpass",
+    };
+
+    const res = await supertest(app).post("/api/users/sign-in").send(body);
+
+    expect(res.status).toBe(401);
   });
 });

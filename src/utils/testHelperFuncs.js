@@ -8,7 +8,6 @@ async function generateTestUser(ticketType) {
     cpf: "25698563256",
     email: "test@test.com",
     password: "test123",
-    confirmPassword: "test1233",
     ticket: ticketType,
   };
   await usersRepository.create(testUser);
