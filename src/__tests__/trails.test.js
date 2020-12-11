@@ -39,5 +39,7 @@ describe("POST on the trail route", () => {
       .send(body);
 
     expect(res.status).toBe(201);
+    expect(res.body).toHaveProperty("trails");
+    expect(res.body.trails).toMatchObject(body);
   });
 });
