@@ -3,7 +3,7 @@ const supertest = require("supertest");
 const app = require("../app");
 const db = require("../database/index");
 
-let userId;
+let userId, token;
 
 async function cleanDB() {
   try {
@@ -65,5 +65,25 @@ describe("POST /sign-up", () => {
     const res = await supertest(app).post("/api/users/sign-up").send(body);
 
     expect(res.status).toBe(409);
+  });
+});
+
+describe("POST /sign-in", () => {
+  it("should respond with status 200 when info is correct ", async () => {
+    const body = {
+      email: "test@test.com",
+      password: "test123",
+    };
+
+    const res = await supertest(app).post("/api/users/sign-in").send(body);
+
+    token = res.body.token;
+
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("id");
+    expect(res.body).toHaveProperty("email");
+    expect(res.body).toHaveProperty("cpf");
+    expect(res.body).toHaveProperty("ticket");
+    expect(res.body).toHaveProperty("token");
   });
 });
