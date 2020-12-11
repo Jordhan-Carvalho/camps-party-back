@@ -16,7 +16,6 @@ router.post("/sign-up", validateSignup, async (req, res) => {
     const createdUser = await usersRepository.create(userParams);
     res.status(201).send(createdUser);
   } catch (e) {
-    console.log(e);
     res.status(409).send(e.message);
   }
 });
@@ -34,7 +33,7 @@ router.post("/sign-in", validateSignin, async (req, res) => {
 
     res.status(200).send({ ...user, token });
   } catch (e) {
-    console.log("Catch", e);
+    res.status(500).send(e.message);
   }
 });
 
@@ -50,7 +49,7 @@ router.get("/:id/complete-reg", authMiddleware, async (req, res) => {
   try {
     if (user.ticket === "hotel") {
       const resp = await registrationsRepository.getHotel(id);
-      hotel = resp.hotel;
+      hotel = resp && resp.hotel;
     }
     const registration = await registrationsRepository.getUserRegistration(id);
     const trails = await trailsRepository.getUserTrails(id);
@@ -58,7 +57,6 @@ router.get("/:id/complete-reg", authMiddleware, async (req, res) => {
 
     res.status(200).send(completeReg);
   } catch (e) {
-    console.log(e);
     res.status(500).send(e.message);
   }
 });

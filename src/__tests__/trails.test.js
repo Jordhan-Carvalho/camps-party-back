@@ -2,19 +2,26 @@ const supertest = require("supertest");
 
 const app = require("../app");
 const db = require("../database");
+const { generateTestUser } = require("../utils/testHelperFuncs");
 
-async function cleanDBTrails() {
+let user;
+
+async function cleanDB() {
   try {
     await db.query("DELETE FROM trails");
+    await db.query("DELETE FROM users");
   } catch (error) {
     console.log(error);
   }
 }
 
-beforeAll(async () => await cleanDBTrails());
+beforeAll(async () => {
+  await cleanDB();
+  user = await generateTestUser("hotel");
+});
 
 afterAll(async () => {
-  await cleanDBTrails();
+  await cleanDB();
   db.end();
 });
 
@@ -26,13 +33,10 @@ describe("POST on the trail route", () => {
       { dayThree: { morning: "Gaming", afternoon: "Gaming", night: "Gaming" } },
     ];
 
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjA3NjIzOTQ2LCJleHAiOjE2MDc3OTY3NDZ9.neMh-a2sGK1XuefTEPiSI_LJKNABaKtvA8TmbYMNLew";
-
     const res = await supertest(app)
-    .post("/api/trails/post-trails")
-    .set({ "x-access-token": token })
-    .send(body);
-    
+      .post("/api/trails/post-trails")
+      .set({ "x-access-token": user.token })
+      .send(body);
 
     expect(res.status).toBe(201);
   });
