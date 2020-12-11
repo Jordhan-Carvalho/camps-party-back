@@ -49,7 +49,7 @@ router.get("/:id/complete-reg", authMiddleware, async (req, res) => {
   try {
     if (user.ticket === "hotel") {
       const resp = await registrationsRepository.getHotel(id);
-      hotel = resp.hotel;
+      hotel = resp && resp.hotel;
     }
     const registration = await registrationsRepository.getUserRegistration(id);
     const trails = await trailsRepository.getUserTrails(id);
