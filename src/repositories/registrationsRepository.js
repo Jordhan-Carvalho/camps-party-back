@@ -19,6 +19,25 @@ async function create(userId, registrationParams) {
   return newRegistration;
 }
 
+async function updatePersonalInfo(userId, registrationParams) {
+  const {address, phone} = registrationParams;
+
+  const resp = await db.query('UPDATE registrations SET (address, phone)=($1, $2) WHERE "userId"=$3 RETURNING *', [
+    address,
+    phone,
+    userId,    
+  ]);
+  return resp.rows[0];
+}
+
+async function updateHotel(userId, hotel) {
+  const resp = await db.query('UPDATE hotels SET hotel=$1 WHERE "userId"=$2 RETURNING *', [
+    hotel,
+    userId,    
+  ]);
+  return resp.rows[0];
+}
+
 async function setHotel(userId, hotel) {
   await db.query('INSERT INTO hotels ("userId", hotel) VALUES ($1, $2)', [
     userId,
@@ -41,4 +60,4 @@ async function getUserRegistration(userId) {
   return resp.rows[0];
 }
 
-module.exports = { create, setHotel, getUserRegistration, getHotel };
+module.exports = { create, setHotel, getUserRegistration, getHotel, updateHotel, updatePersonalInfo };
