@@ -1,9 +1,27 @@
 const db = require("../database");
 
 async function create(userId, trails) {
-  const stringTrails = JSON.stringify(trails);
-
+  const stringTrails = JSON.stringify(trails);  
   let createdTrails;
+  let updatedTrails;
+
+  let userExists = await getUserTrails(userId);  
+
+  if(userExists !== undefined){
+
+    try{
+      const res = await db.query(
+        'UPDATE trails SET trails=$1 WHERE "userId"=$2 RETURNING *',
+        [stringTrails, userId]
+      )
+      updatedTrails = res.rows[0];
+    }catch(err){
+      console.log(err)
+    }
+    return updatedTrails;
+  }
+
+  console.log("passou")
 
   try {
     const result = await db.query(
